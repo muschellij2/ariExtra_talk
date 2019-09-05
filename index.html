@@ -136,13 +136,87 @@ article {
 
 <p><img src="figure/ari_workflow.png" width="100%" /></p>
 
+</article></slide><slide class=""><hgroup><h2>What you need</h2></hgroup><article  id="what-you-need">
+
+<ul>
+<li><code>ffmpeg</code> installed</li>
+<li>API key to Google/Amazon/Microsoft Text-to-Speech APIs</li>
+</ul>
+
 </article></slide><slide class=""><hgroup><h2>Workflow of <code>ari</code></h2></hgroup><article  id="workflow-of-ari-1">
 
 <ul>
 <li>Images with a audio → <code>ari_stitch</code></li>
+<li>Rmd document with HTML comments → Images with a text script (<code>ari_narrate</code>)</li>
 <li>Images with a text script → <code>ari_spin</code></li>
-<li>Rmd document with HTML comments → <code>ari_narrate</code></li>
-</ul></article></slide>
+<li>Text script → audio (<code>text2speech</code>)</li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2>Text to Speech</h2></hgroup><article  id="text-to-speech">
+
+<div id="left_col">
+<ul>
+<li><code>googleLanguageR</code> - Google Cloud Services</li>
+<li><code>aws.polly</code> - Amazon Polly</li>
+<li><code>mscstts</code> - Microsoft Text-to-Speech or Bing Speech (my package)</li>
+</ul></div>
+
+</div>
+
+<div id="right_col">
+<p><code>text2speech</code> <img src="figure/rule_them_all.gif" width="100%" /></p></div>
+
+</article></slide><slide class=""><hgroup><h2>Workflow of <code>ariExtra</code></h2></hgroup><article  id="workflow-of-ariextra">
+
+<ul>
+<li>PPTX with notes → <code>pptx_to_ari</code></li>
+<li>Google Slides with notes → <code>gs_to_ari</code></li>
+<li><code>ioslides</code> Rmd with comments → <code>rmd_to_ari</code></li>
+<li><code>xaringan</code> Rmd with comments → <code>rmd_to_ari</code></li>
+<li><p>PDF + text → <code>pdf_to_ari</code></p></li>
+<li><p>All <code>*_to_ari</code> functions → PNGs + comments in MD</p></li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2>Google Slides Example</h2></hgroup><article  id="google-slides-example">
+
+<p><a href='https://docs.google.com/presentation/d/1Opt6lv7rRi7Kzb9bI0u3SWX1pSz1k7botaphTuFYgNs/edit#slide=id.p' title=''>https://docs.google.com/presentation/d/1Opt6lv7rRi7Kzb9bI0u3SWX1pSz1k7botaphTuFYgNs/edit#slide=id.p</a></p>
+
+<p><img src="figure/gs_snap.png" width="80%" /></p>
+
+</article></slide><slide class=""><hgroup><h2>Google Slides Example</h2></hgroup><article  id="google-slides-example-1">
+
+<div class="left-half">
+<pre class = 'prettyprint lang-r'>id = get_slide_id(
+  file.path(
+    &quot;https://docs.google.com/presentation/d&quot;,
+    &quot;1Opt6lv7rRi7Kzb9bI0u3SWX1pSz1k7botaphTuFYgNs&quot;, 
+    &quot;edit#slide=id.p&quot;))
+id</pre>
+
+<pre >[1] &quot;1Opt6lv7rRi7Kzb9bI0u3SWX1pSz1k7botaphTuFYgNs&quot;</pre></div>
+
+</div>
+
+<div class="right-half">
+<pre class = 'prettyprint lang-r'>result = gs_to_ari(id)</pre>
+
+<pre >Downloading PPTX</pre>
+
+<pre >Getting Notes from PPTX</pre>
+
+<pre >Downloading PDF</pre>
+
+<pre >Converting PDF to PNGs</pre>
+
+<pre >Converting page 1 to /var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T//RtmpmDy6nH/fileab5432b625ce.png... done!
+Converting page 2 to /var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T//RtmpmDy6nH/fileab54546c1164.png... done!
+Converting page 3 to /var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T//RtmpmDy6nH/fileab542e9e789.png... done!
+Converting page 4 to /var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T//RtmpmDy6nH/fileab544a5fd4dd.png... done!
+Converting page 5 to /var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T//RtmpmDy6nH/fileab5459901f50.png... done!
+Converting page 6 to /var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T//RtmpmDy6nH/fileab544f7eb20.png... done!
+Converting page 7 to /var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T//RtmpmDy6nH/fileab54306d846c.png... done!</pre>
+
+<pre >Making output_file directories</pre></div></article></slide>
 
 
   <slide class="backdrop"></slide>
