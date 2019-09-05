@@ -32,9 +32,20 @@ pkg_name = "usethis"
 ```
 
 <!-- SMI 2019 product -->
-# Start of a Package: \n Plotting a voxel from \n 800 Subjects in a Shiny App
+# Start of a Package: \n Harmonize all inputs to `ari`
 
-# How can you read in a NIfTI image in R?
+## Workflow of `ari` 
+
+```{r, echo = FALSE, out.width="100%"}
+knitr::include_graphics("figure/ari_workflow.png")
+```
+
+## Workflow of `ari` 
+
+- Images with a audio → `ari_stitch`
+- Images with a text script → `ari_spin`
+- Rmd document with HTML comments → `ari_narrate`
+
 
 
 
