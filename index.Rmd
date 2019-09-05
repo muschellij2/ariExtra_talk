@@ -1,0 +1,40 @@
+---
+title: "ariExtra: It's like ari, but ... extra"
+author: "John Muschelli, slides at http://johnmuschelli.com/ariExtra_talk"
+logo: bloomberg.logo.small.horizontal.blue.png
+output:
+  ioslides_presentation:
+    css: neuroconductor.css
+    md_extensions: -markdown_in_html_blocks
+    self_contained: no
+    widescreen: yes
+  beamer_presentation: default
+subtitle: "source at https://github.com/muschellij2/ariExtra_talk"
+bibliography: refs.bib    
+---
+
+<style type="text/css">
+article {
+  font-size: 28pt;
+}
+</style>
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(ari)
+library(ariExtra)
+library(didactr)
+```
+
+
+```{r, eval = TRUE, echo = FALSE}
+pkg_name = "usethis"
+```
+
+<!-- SMI 2019 product -->
+# Start of a Package: \n Plotting a voxel from \n 800 Subjects in a Shiny App
+
+# How can you read in a NIfTI image in R?
+
+
+
