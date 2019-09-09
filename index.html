@@ -128,29 +128,57 @@ article {
 }
 </style>
 
+<slide class=""><hgroup><h2>Overall Goals of the Project</h2></hgroup><article  id="overall-goals-of-the-project">
+
+<ul>
+<li>Make reproducible videos</li>
+<li>Provide users flexibility of what Services (Google/Amazon) they want to use</li>
+<li><p>Translate video into another language</p></li>
+<li><p><code>ari</code> creates reproducible videos, but …</p></li>
+</ul>
+
 <!-- SMI 2019 product -->
 
-<slide class="segue dark nobackground level1"><hgroup class = 'auto-fadein'><h2>Start of a Package: Harmonize all inputs to <code>ari</code></h2></hgroup><article  id="start-of-a-package-harmonize-all-inputs-to-ari">
+</article></slide><slide class="segue dark nobackground level1"><hgroup class = 'auto-fadein'><h2>Goal: Harmonize all inputs to <code>ari</code></h2></hgroup><article  id="goal-harmonize-all-inputs-to-ari">
 
 </article></slide><slide class=""><hgroup><h2>Workflow of <code>ari</code></h2></hgroup><article  id="workflow-of-ari">
 
 <p><img src="figure/ari_workflow.png" width="100%" /></p>
 
-</article></slide><slide class=""><hgroup><h2>What you need</h2></hgroup><article  id="what-you-need">
-
-<ul>
-<li><code>ffmpeg</code> installed</li>
-<li>API key to Google/Amazon/Microsoft Text-to-Speech APIs</li>
-</ul>
-
-</article></slide><slide class=""><hgroup><h2>Workflow of <code>ari</code></h2></hgroup><article  id="workflow-of-ari-1">
+</article></slide><slide class=""><hgroup><h2>Workflow of <code>ari</code> - functions</h2></hgroup><article  id="workflow-of-ari---functions">
 
 <ul>
 <li>Images with a audio → <code>ari_stitch</code></li>
 <li>Rmd document with HTML comments → Images with a text script (<code>ari_narrate</code>)</li>
 <li>Images with a text script → <code>ari_spin</code></li>
-<li>Text script → audio (<code>text2speech</code>)</li>
 </ul>
+
+</article></slide><slide class=""><hgroup><h2>Workflow of <code>ari</code>: Version 1.0</h2></hgroup><article  id="workflow-of-ari-version-1.0">
+
+<div id="left_col">
+<ul>
+<li>Synthesize audio through Amazon Polly</li>
+<li>Do checks with length of images and audio/text</li>
+<li>Set a whole bunch of <code>ffmpeg</code> flags and run <code>ffmpeg</code> through <code>system</code></li>
+<li>Audio + Images → <code>ffmpeg</code> → mp4</li>
+</ul></div>
+
+<div id="right_col">
+<p>Example of checks</p>
+
+<p><img src="figure/grandma_stitch.jpg" width="100%" /></p></div>
+
+</article></slide><slide class=""><hgroup><h2>Workflow of <code>ari</code>: Version 2.0</h2></hgroup><article  id="workflow-of-ari-version-2.0">
+
+<ul>
+<li>Text script → audio (through <code>text2speech</code> package)</li>
+<li>Synthesize audio through <code>text2speech</code> package</li>
+<li>Use <code>ariExtra</code> to unify the output format to use one <code>ari</code> function</li>
+<li>Create an <code>ffmpeg</code> package (short term, not done) and pass to that</li>
+<li>Pass images and such through <code>av</code> package (long term)</li>
+</ul>
+
+</article></slide><slide class="segue dark nobackground level1"><hgroup class = 'auto-fadein'><h2><code>text2speech</code>: Harmonizing Text to Speech Packages</h2></hgroup><article  id="text2speech-harmonizing-text-to-speech-packages">
 
 </article></slide><slide class=""><hgroup><h2>Text to Speech</h2></hgroup><article  id="text-to-speech">
 
@@ -161,10 +189,48 @@ article {
 <li><code>mscstts</code> - Microsoft Text-to-Speech or Bing Speech (my package)</li>
 </ul></div>
 
-</div>
-
 <div id="right_col">
 <p><code>text2speech</code> <img src="figure/rule_them_all.gif" width="100%" /></p></div>
+
+</article></slide><slide class=""><hgroup><h2>Text to Speech: <code>knitr</code> Enginge</h2></hgroup><article  id="text-to-speech-knitr-enginge">
+
+<p>Add this to the header</p>
+
+<pre class = 'prettyprint lang-markdown'>```{r}
+knitr::knit_engines$set(speak = text2speech::tts_speak_engine)
+```</pre>
+
+<p>Then have a code chunk like:</p>
+
+<pre class = 'prettyprint lang-markdown'>```{speak, service = &quot;amazon&quot;, voice = &quot;Joanna&quot;}
+Here are a bunch of words to say stuff
+```</pre>
+
+</article></slide><slide class=""><hgroup><h2>Text to Speech Example</h2></hgroup><article  id="text-to-speech-example">
+
+<p>Amazon</p>
+
+<audio controls>
+
+<source src="index_files/amazon.mp3">
+
+</audio>
+
+<p>Google</p>
+
+<audio controls>
+
+<source src="index_files/google.mp3">
+
+</audio>
+
+<p>Microsoft</p>
+
+<audio controls>
+
+<source src="index_files/microsoft.mp3">
+
+</audio>
 
 </article></slide><slide class=""><hgroup><h2>Workflow of <code>ariExtra</code></h2></hgroup><article  id="workflow-of-ariextra">
 
@@ -174,7 +240,7 @@ article {
 <li><code>ioslides</code> Rmd with comments → <code>rmd_to_ari</code></li>
 <li><code>xaringan</code> Rmd with comments → <code>rmd_to_ari</code></li>
 <li><p>PDF + text → <code>pdf_to_ari</code></p></li>
-<li><p>All <code>*_to_ari</code> functions → PNGs + comments in MD</p></li>
+<li><p>All <code>*_to_ari</code> functions → <code>make_ari_document</code> → PNGs + comments in MD</p></li>
 </ul>
 
 </article></slide><slide class=""><hgroup><h2>Google Slides Example</h2></hgroup><article  id="google-slides-example">
@@ -185,38 +251,160 @@ article {
 
 </article></slide><slide class=""><hgroup><h2>Google Slides Example</h2></hgroup><article  id="google-slides-example-1">
 
-<div class="left-half">
 <pre class = 'prettyprint lang-r'>id = get_slide_id(
-  file.path(
+  paste(
     &quot;https://docs.google.com/presentation/d&quot;,
     &quot;1Opt6lv7rRi7Kzb9bI0u3SWX1pSz1k7botaphTuFYgNs&quot;, 
-    &quot;edit#slide=id.p&quot;))
+    &quot;edit#slide=id.p&quot;, sep = &quot;/&quot;))
 id</pre>
 
-<pre >[1] &quot;1Opt6lv7rRi7Kzb9bI0u3SWX1pSz1k7botaphTuFYgNs&quot;</pre></div>
+<pre >[1] &quot;1Opt6lv7rRi7Kzb9bI0u3SWX1pSz1k7botaphTuFYgNs&quot;</pre>
 
-</div>
+</article></slide><slide class=""><hgroup><h2>Google Slides Example</h2></hgroup><article  id="google-slides-example-2">
 
-<div class="right-half">
-<pre class = 'prettyprint lang-r'>result = gs_to_ari(id)</pre>
+<pre class = 'prettyprint lang-r'>result = gs_to_ari(id, verbose = FALSE); xx = readLines(result$output_file)[1:15]
+names(result); </pre>
 
-<pre >Downloading PPTX</pre>
+<pre >[1] &quot;output_file&quot;     &quot;original_images&quot; &quot;images&quot;          &quot;script&quot;         
+[5] &quot;use_knitr&quot;      </pre>
 
-<pre >Getting Notes from PPTX</pre>
+<pre class = 'prettyprint lang-r'>head(result$script, 2)</pre>
 
-<pre >Downloading PDF</pre>
+<pre >[1] &quot;Lean pub created a mook platform.  We want to discuss some options for creating courses with Lean pub at Johns Hopkins.&quot;                    
+[2] &quot;Here is an example of the way Lean pub turns text into an output course.  The left hand side is written in a markdown format called Markua.&quot;</pre>
 
-<pre >Converting PDF to PNGs</pre>
+<pre class = 'prettyprint lang-r'>head(result$images, 2)</pre>
 
-<pre >Converting page 1 to /var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T//RtmpmDy6nH/fileab5432b625ce.png... done!
-Converting page 2 to /var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T//RtmpmDy6nH/fileab54546c1164.png... done!
-Converting page 3 to /var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T//RtmpmDy6nH/fileab542e9e789.png... done!
-Converting page 4 to /var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T//RtmpmDy6nH/fileab544a5fd4dd.png... done!
-Converting page 5 to /var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T//RtmpmDy6nH/fileab5459901f50.png... done!
-Converting page 6 to /var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T//RtmpmDy6nH/fileab544f7eb20.png... done!
-Converting page 7 to /var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T//RtmpmDy6nH/fileab54306d846c.png... done!</pre>
+<pre >[1] &quot;/private/var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T/RtmpjclHRr/filee22763909e20_files/slide_1.png&quot;
+[2] &quot;/private/var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T/RtmpjclHRr/filee22763909e20_files/slide_2.png&quot;</pre>
 
-<pre >Making output_file directories</pre></div></article></slide>
+</article></slide><slide class=""><hgroup><h2>Google Slides Example</h2></hgroup><article  id="google-slides-example-3">
+
+<pre class = 'prettyprint lang-r'>cat(xx, sep = &quot;\n&quot;)</pre>
+
+<pre >---
+output:
+  ariExtra::ari_document:
+    verbose: no
+---
+
+
+----------
+
+&lt;!--Lean pub created a mook platform.  We want to discuss some options for creating courses with Lean pub at Johns Hopkins.--&gt;
+![](/private/var/folders/1s/wrtqcpxn685_zk570bnx9_rr0000gr/T/RtmpjclHRr/filee2274826f683.png)
+
+
+----------</pre>
+
+</article></slide><slide class=""><hgroup><h2>Output (currently)</h2></hgroup><article  id="output-currently">
+
+<ul>
+<li>Markdown file with comments in HTML (md so <code>knitr</code> not run)</li>
+<li>Can hit <code>Knit</code> in RStudio</li>
+<li>Images converted to PNGs</li>
+</ul>
+
+</article></slide><slide class="segue dark nobackground level1"><hgroup class = 'auto-fadein'><h2>Live Demo</h2></hgroup><article  id="live-demo">
+
+</article></slide><slide class=""><hgroup><h2>What you need for <code>ari</code></h2></hgroup><article  id="what-you-need-for-ari">
+
+<ul>
+<li><code>ffmpeg</code> installed ( <a href='https://gist.github.com/muschellij2/3de4563dfc615e412f2e5c7a4eb039d5' title=''><code>brew install ffmpeg</code></a> )</li>
+<li>API key to <strong>Google</strong>/Amazon/Microsoft Text-to-Speech APIs
+
+<ul>
+<li>Authorization Howto: <a href='https://github.com/ropensci/googleLanguageR#authentication' title=''>https://github.com/ropensci/googleLanguageR#authentication</a></li>
+<li>gets a JSON file, in <code>.Renviron</code>:</li>
+</ul></li>
+</ul>
+
+<pre class = 'prettyprint lang-bash'>GL_AUTH=location_of_json_file.json</pre>
+
+</article></slide><slide class=""><hgroup><h2>Catches in <code>ariExtra</code></h2></hgroup><article  id="catches-in-ariextra">
+
+<ul>
+<li>PDF to PNG requires <code>pdftools</code> which requies <code>libpoppler</code>/<code>poppler</code> install</li>
+<li>PPTX to PDF requires <code>LibreOffice</code></li>
+<li>Google Slides - needs to be shared</li>
+</ul>
+
+<p><img src="figure/share.png" width="60%" /></p>
+
+</article></slide><slide class="segue dark nobackground level1"><hgroup class = 'auto-fadein'><h2><a href='https://jhubiostatistics.shinyapps.io/presentation_to_video/' title=''>Shiny Application</a></h2></hgroup><article  id="shiny-application">
+
+</article></slide><slide class=""><hgroup><h2>Overall Goals of the Project</h2></hgroup><article  id="overall-goals-of-the-project-1">
+
+<ul>
+<li>Make reproducible videos ✓</li>
+<li>Provide users flexibility with Services ✓</li>
+<li>Translate video into another language X</li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2>Overall Goals of the Project</h2></hgroup><article  id="overall-goals-of-the-project-2">
+
+<ul>
+<li>Make reproducible videos ✓</li>
+<li>Provide users flexibility with Services ✓</li>
+<li>Translate <strong>audio</strong> into another language ✓
+
+<ul>
+<li><code>didactr::copy_and_translate_slide()</code></li>
+<li>Want to be able to translate any (accessible) text as well</li>
+</ul></li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2>Difficult issue: Authentication (translation)</h2></hgroup><article  id="difficult-issue-authentication-translation">
+
+</article></slide><slide class=""><hgroup><h2>Translating slides</h2></hgroup><article  id="translating-slides">
+
+<ul>
+<li>Translating text <strong>inside slides</strong> requires:</li>
+</ul>
+
+<ol>
+<li>OAuth using Google - need to be able to copy and edit the slide deck</li>
+<li>Google Translation API enabling (can still use JSON from above)</li>
+</ol>
+
+<ul>
+<li>Could be one API key for both, enabling all APIs (Slides + Translation)</li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2>Biggest issue with Authentication</h2></hgroup><article  id="biggest-issue-with-authentication">
+
+<ul>
+<li><p>OAuth - can edit slides and extract things w/o the &ldquo;Share button&rdquo;</p></li>
+<li>Cannot authenticate via OAuth for Google Cloud services
+
+<ul>
+<li>Text to Speech</li>
+<li>Translate</li>
+</ul></li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2>Open Issues</h2></hgroup><article  id="open-issues">
+
+<ul>
+<li>Dictionary of our &ldquo;change words&rdquo; RStudio to R studio - needs to be incorporated</li>
+<li>Translation requires API authorization</li>
+<li>Can we create a better output format (<code>tibble</code>-like)?</li>
+<li>Slides with no audio? Allowed? Why?</li>
+<li><code>ffmpeg</code> to <code>av</code> package - <code>av</code> doesn’t have all quirks fixed</li>
+<li>Is output format right? md vs. Rmd</li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2>Next Project steps</h2></hgroup><article  id="next-project-steps">
+
+<ul>
+<li>Adapt <code>didactr</code> with new <code>gargle</code> workflow</li>
+<li>Get MOOC app authenticated (so no warning page)</li>
+<li>Streamline the translation so it translates notes (done as of 3AM)
+
+<ul>
+<li>need to figure out how to escape/protect certain words (i.e. code or jargon)</li>
+</ul></li>
+</ul></article></slide>
 
 
   <slide class="backdrop"></slide>
